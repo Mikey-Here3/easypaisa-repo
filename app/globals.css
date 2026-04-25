@@ -1,8 +1,18 @@
 @import "tailwindcss";
 
+/* =============================================
+   Easypaisa Payment UI — Global Styles
+   ============================================= */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f0f4f8;
+  --foreground: #1a1a2e;
+  --easypaisa-green: #00c853;
+  --easypaisa-green-dark: #00a844;
+  --easypaisa-green-glow: rgba(0, 200, 83, 0.35);
+  --card-bg: #ffffff;
+  --card-border: rgba(0, 0, 0, 0.06);
+  --muted: #64748b;
 }
 
 @theme inline {
@@ -14,13 +24,111 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #0b0f19;
+    --foreground: #e2e8f0;
+    --card-bg: #141929;
+    --card-border: rgba(255, 255, 255, 0.06);
+    --muted: #94a3b8;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans, "Inter", system-ui, sans-serif);
+}
+
+/* ---- Animated gradient background ---- */
+.gradient-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.gradient-bg::before,
+.gradient-bg::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.35;
+  animation: floatBlob 12s ease-in-out infinite alternate;
+}
+
+.gradient-bg::before {
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, #00c853 0%, transparent 70%);
+  top: -15%;
+  left: -10%;
+}
+
+.gradient-bg::after {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, #00e676 0%, transparent 70%);
+  bottom: -20%;
+  right: -10%;
+  animation-delay: -6s;
+}
+
+@keyframes floatBlob {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    transform: translateY(40px) scale(1.08);
+  }
+}
+
+/* ---- Spinner keyframe ---- */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2.5px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+/* ---- Pulse ring for the logo ---- */
+@keyframes pulseRing {
+  0% {
+    box-shadow: 0 0 0 0 var(--easypaisa-green-glow);
+  }
+  70% {
+    box-shadow: 0 0 0 14px rgba(0, 200, 83, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 200, 83, 0);
+  }
+}
+
+.pulse-ring {
+  animation: pulseRing 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* ---- Custom Scrollbar ---- */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(0, 200, 83, 0.2);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--easypaisa-green);
 }
