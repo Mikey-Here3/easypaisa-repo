@@ -62,7 +62,7 @@ function formatPKR(amount: number): string {
 }
 
 export default function PaymentPage() {
-  const [selected, setSelected] = useState<string>("starter");
+  const [selected, setSelected] = useState<string>("custom");
   const [customAmount, setCustomAmount] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -139,17 +139,21 @@ export default function PaymentPage() {
               </span>
             </div>
           </div>
-          <h1 className="text-2xl md:text-4xl font-black mb-2 tracking-tight">Select Payment Plan</h1>
+          <h1 className="text-2xl md:text-4xl font-black mb-2 tracking-tight">
+            {isCustom ? "Enter Amount to Pay" : "Select Payment Plan"}
+          </h1>
           <p className="text-sm md:text-base font-medium opacity-70" style={{ color: "var(--muted)" }}>
-            Choose a preset plan or enter a custom amount
+            {isCustom 
+              ? "Fast, secure payments via Easypaisa" 
+              : "Choose a preset plan or enter a custom amount"}
           </p>
         </div>
 
         {/* ---- Layout Wrapper ---- */}
-        <div className="flex flex-col lg:flex-row gap-8 w-full items-start">
+        <div className="flex flex-col lg:flex-row gap-8 w-full items-start justify-center">
           
-          {/* ---- Left: Product Cards Grid ---- */}
-          <div className="flex-1 w-full order-2 lg:order-1">
+          {/* ---- Left: Product Cards Grid (HIDDEN ON MOBILE) ---- */}
+          <div className="hidden lg:block flex-1 w-full order-2 lg:order-1">
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-5 max-h-[500px] lg:max-h-[700px] overflow-y-auto p-2 custom-scrollbar">
               {PRODUCTS.map((product) => {
                 const isActive = selected === product.id;
@@ -238,7 +242,7 @@ export default function PaymentPage() {
           </div>
 
           {/* ---- Right: Checkout Card ---- */}
-          <div className="w-full lg:w-[400px] xl:w-[450px] order-1 lg:order-2 sticky top-8">
+          <div className="w-full max-w-md lg:w-[400px] xl:w-[450px] order-1 lg:order-2 sticky top-8">
             <div
               className="w-full rounded-3xl p-6 md:p-8 shadow-2xl backdrop-blur-xl border-t border-l"
               style={{
@@ -268,7 +272,7 @@ export default function PaymentPage() {
                 
                 <div className="flex justify-between items-start gap-4">
                   <div className="flex-1">
-                    <p className="font-bold text-base md:text-lg mb-1">{isCustom ? "Custom Amount" : activeProduct.name}</p>
+                    <p className="font-bold text-base md:text-lg mb-1">{isCustom ? "Custom Payment" : activeProduct.name}</p>
                     <p className="text-xs opacity-70 leading-relaxed">{isCustom ? "Pay exactly what you want" : activeProduct.description}</p>
                   </div>
                   <div className="text-right">
